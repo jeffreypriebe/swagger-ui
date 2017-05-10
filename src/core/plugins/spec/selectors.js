@@ -202,7 +202,9 @@ export const operationsWithTags = createSelector(
 export const taggedOperations = ( state ) =>( { getConfigs } ) => {
   let { operationsSorter }= getConfigs()
 
-  return operationsWithTags(state).map((ops, tag) => {
+  const alphaOpsWithTags = operationsWithTags(state).sort((a, b) => a.getIn([0, 'path']).localeCompare(b.getIn([0, 'path'])))
+
+  return alphaOpsWithTags.map((ops, tag) => {
     let sortFn = typeof operationsSorter === "function" ? operationsSorter
                                                         : sorters.operationsSorter[operationsSorter]
     let operations = !sortFn ? ops : ops.sort(sortFn)
